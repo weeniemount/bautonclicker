@@ -12,6 +12,7 @@ HINSTANCE hInst;
 bool buttonPressed[GRID_SIZE * GRID_SIZE] = {false};
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 bool deletebutton = true;
+bool sound = true;
 
 // WinMain function (entry point)
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
@@ -30,6 +31,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     #define ABOUT 256
     #define HELP_TOPICS 260
 	#define BUTTON_DELETE 261
+	#define SOUND_TOGGLE 262
 
     HMENU menu = CreateMenu();
     HMENU game = CreateMenu();
@@ -47,6 +49,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     AppendMenu(help, MF_STRING, HELP_TOPICS, "help topicals...");
     AppendMenu(help, MF_STRING, ABOUT, "abaut");
 	AppendMenu(options, MF_STRING, BUTTON_DELETE, "toggle deleting button");
+	AppendMenu(options, MF_STRING, SOUND_TOGGLE, "toggle sound");
 
 	if (!RegisterClass(&wc)) {
 		MessageBox(NULL, "Window registration failed!", "Error", MB_OK);
@@ -144,7 +147,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 			// Disable the button
 			if (hButton) {
-				PlayResourceSound(hInst, IDR_POPSFX);
+				if (sound) {
+					PlayResourceSound(hInst, IDR_POPSFX);
+				}
 				if (deletebutton) {
 					DestroyWindow(hButton);
 				} else {
@@ -168,11 +173,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     MessageBox(hWnd, "just a funny game to click buttons\nmade by boinkwer to push", "abaut button pushher", MB_OK | MB_ICONINFORMATION);
                     break;
 				case BUTTON_DELETE:
-					if (deletebutton == true) {
-						deletebutton = false;
-					} else {
-						deletebutton = true;
-					}
+					deletebutton = !deletebutton;
+					break;
+				case SOUND_TOGGLE:
+					sound = !sound;
 					break;
 				case NEW_GAME:
                     // Remove all buttons
