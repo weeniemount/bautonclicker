@@ -1,0 +1,16 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=buttonhelp.chm
+Contents file=buttonhelp.hhc
+Default font=,8,0
+Default topic=
+Full-text search=Yes
+Index file=buttonhelp.hhk
+Language=0x409 English (United States)
+Title=bauton clicker hlep tropics
+
+[FILES]
+introduction.html
+gammenu.html
+newgaem.html
+abaut.html
