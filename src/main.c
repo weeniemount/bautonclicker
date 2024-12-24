@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "resource/resource.h"
 
 #define GRID_SIZE 16
@@ -9,6 +10,7 @@
 HINSTANCE hInst;
 bool buttonPressed[GRID_SIZE * GRID_SIZE] = {false};
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+bool deletebutton = true;
 
 // WinMain function (entry point)
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
@@ -26,7 +28,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	#define NEW_GAME 129
     #define ABOUT 256
     #define HELP_TOPICS 260
-	#define BUTTON_DELETE 260
+	#define BUTTON_DELETE 261
 
     HMENU menu = CreateMenu();
     HMENU game = CreateMenu();
@@ -110,7 +112,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			// Get the button ID
 			int buttonID = LOWORD(wParam);
 			HWND hButton = (HWND)lParam;
-			bool deletebutton = true;
 
  			buttonPressed[buttonID] = true;
 
@@ -149,6 +150,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 case ABOUT:
                     MessageBox(hWnd, "just a funny game to click buttons\nmade by boinkwer to push", "abaut button pushher", MB_OK | MB_ICONINFORMATION);
                     break;
+				case BUTTON_DELETE:
+					if (deletebutton == true) {
+						deletebutton = false;
+					} else {
+						deletebutton = true;
+					}
+					break;
 				case NEW_GAME:
                     // Remove all buttons
                     for (int i = 0; i < GRID_SIZE * GRID_SIZE; ++i) {

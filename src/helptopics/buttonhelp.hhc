@@ -32,6 +32,18 @@
 </OBJECT>
 </UL>
 <LI><OBJECT type="text/sitemap">
+  <param name="Name" value="options menu">
+  <param name="Local" value="optionsmenu.html">
+  <param name="ImageNumber" value="11">
+</OBJECT>
+<UL>
+<LI><OBJECT type="text/sitemap">
+  <param name="Name" value="toggle deleting button">
+  <param name="Local" value="toggledeletebutton.html">
+  <param name="ImageNumber" value="11">
+</OBJECT>
+</UL>
+<LI><OBJECT type="text/sitemap">
   <param name="Name" value="abaut">
   <param name="Local" value="abaut.html">
   <param name="ImageNumber" value="11">
