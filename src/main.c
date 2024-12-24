@@ -23,9 +23,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON));
 
 	#define EXIT 128
+	#define NEW_GAME 129
     #define ABOUT 256
     #define HELP_TOPICS 260
-    #define STATUS_BAR 261
 
     HMENU menu = CreateMenu();
     HMENU game = CreateMenu();
@@ -35,7 +35,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     AppendMenu(menu, MF_POPUP, (UINT_PTR)game, "gam");
     AppendMenu(menu, MF_POPUP, (UINT_PTR)help, "hlep");
 
-    AppendMenu(game, MF_STRING, EXIT, "new gam");
+    AppendMenu(game, MF_STRING, NEW_GAME, "new gam");
 	AppendMenu(game, MF_SEPARATOR, 0, NULL);  // Divider
     AppendMenu(game, MF_STRING, EXIT, "exitearino");
     AppendMenu(help, MF_STRING, HELP_TOPICS, "help topicals...");
@@ -142,6 +142,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 case ABOUT:
                     MessageBox(hWnd, "just a funny game to click buttons\nmade by boinkwer to push", "abaut button pushher", MB_OK | MB_ICONINFORMATION);
                     break;
+				case NEW_GAME:
+					break;
+				
+
 			}
 
 			break;
