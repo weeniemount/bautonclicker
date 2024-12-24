@@ -109,6 +109,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			// Create a grid of buttons
 			for (int row = 0; row < GRID_SIZE; ++row) {
 				for (int col = 0; col < GRID_SIZE; ++col) {
+					int buttonID = 2000 + (row * GRID_SIZE + col);
 					HWND hButton = CreateWindow(
 						"BUTTON", 
 						"", // No text
@@ -118,7 +119,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 						BUTTON_SIZE, 
 						BUTTON_SIZE, 
 						hWnd, 
-						(HMENU)(UINT_PTR)(row * GRID_SIZE + col),
+						(HMENU)(UINT_PTR)buttonID,
 						hInst, 
 						NULL
 					);
