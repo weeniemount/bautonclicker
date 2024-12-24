@@ -57,10 +57,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HWND hWnd = CreateWindow(
 		"buttonclicker",
 		"bauton clicker",
-		WS_OVERLAPPEDWINDOW,
+		WS_OVERLAPPEDWINDOW & ~(WS_SIZEBOX | WS_MAXIMIZEBOX),
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		GRID_SIZE * BUTTON_SIZE + 16, // Width
-		GRID_SIZE * BUTTON_SIZE + 39 + 20, // Height
+		GRID_SIZE * BUTTON_SIZE + 6, // Width
+		GRID_SIZE * BUTTON_SIZE + 39 + 10, // Height
 		NULL, menu, hInstance, NULL
 	);
 
