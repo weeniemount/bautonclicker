@@ -1,3 +1,2 @@
-*.exe
-*/*.exe
+src/helptopics/chmer.exe
 src/resource/resource.o
