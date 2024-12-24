@@ -118,7 +118,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 						BUTTON_SIZE, 
 						BUTTON_SIZE, 
 						hWnd, 
-						(HMENU)(row * GRID_SIZE + col), 
+						(HMENU)(UINT_PTR)(row * GRID_SIZE + col),
 						hInst, 
 						NULL
 					);
@@ -198,7 +198,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                                 BUTTON_SIZE, 
                                 BUTTON_SIZE, 
                                 hWnd, 
-                                (HMENU)(row * GRID_SIZE + col), 
+                                (HMENU)(UINT_PTR)(row * GRID_SIZE + col),
                                 hInst, 
                                 NULL
                             );
