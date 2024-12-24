@@ -1,10 +1,12 @@
 #include <windows.h>
+#include <stdbool.h>
 
-#define GRID_SIZE 16
+#define GRID_SIZE 5
 #define BUTTON_SIZE 16
 
 // Global variables
 HINSTANCE hInst;
+bool buttonPressed[GRID_SIZE * GRID_SIZE] = {false};
 
 // Callback function for the main window
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
@@ -38,13 +40,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			int buttonID = LOWORD(wParam);
 			HWND hButton = (HWND)lParam;
 
+ 			buttonPressed[buttonID] = true;
+
+            // Check if all buttons are pressed
+            bool allPressed = true;
+            for (int i = 0; i < GRID_SIZE * GRID_SIZE; ++i) {
+                if (!buttonPressed[i]) {
+                    allPressed = false;
+                    break;
+                }
+            }
+
+            // Display message if all buttons are pressed
+            if (allPressed) {
+                MessageBox(hWnd, "All buttons have been pressed!", "Congratulations", MB_OK);
+            }
+
 			// Disable the button
 			if (hButton) {
-				EnableWindow(hButton, FALSE);
+				DestroyWindow(hButton);
+
+				/*EnableWindow(hButton, FALSE);
 				// Change button appearance to "held down"
 				SetWindowLong(hButton, GWL_STYLE, GetWindowLong(hButton, GWL_STYLE) | BS_FLAT);
 				SendMessage(hButton, WM_CTLCOLORBTN, (WPARAM)GetSysColorBrush(COLOR_BTNFACE), 0);
-				InvalidateRect(hButton, NULL, TRUE); // Force redraw
+				InvalidateRect(hButton, NULL, TRUE); // Force redraw*/
 			}
 			break;
 		}
@@ -67,7 +87,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	wc.lpfnWndProc = WndProc;
 	wc.hInstance = hInstance;
 	wc.lpszClassName = "buttonclicker";
-	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wc.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
 
 	if (!RegisterClass(&wc)) {
 		MessageBox(NULL, "Window registration failed!", "Error", MB_OK);
