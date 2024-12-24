@@ -182,7 +182,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 				case NEW_GAME:
                     // Remove all buttons
                     for (int i = 0; i < GRID_SIZE * GRID_SIZE; ++i) {
-                        DestroyWindow(GetDlgItem(hWnd, i));
+                        DestroyWindow(GetDlgItem(hWnd, i + 1000));
                     }
                     // Clear the buttonPressed array
                     memset(buttonPressed, 0, sizeof(buttonPressed));
@@ -199,7 +199,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                                 BUTTON_SIZE, 
                                 BUTTON_SIZE, 
                                 hWnd, 
-                                (HMENU)(UINT_PTR)(row * GRID_SIZE + col),
+                                (HMENU)(UINT_PTR)(1000 + row * GRID_SIZE + col),
                                 hInst, 
                                 NULL
                             );
