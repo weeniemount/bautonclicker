@@ -6,6 +6,51 @@
 // Global variables
 HINSTANCE hInst;
 
+// WinMain function (entry point)
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+	hInst = hInstance;
+
+	// Register the main window class
+	WNDCLASS wc = { 0 };
+	wc.lpfnWndProc = WndProc;
+	wc.hInstance = hInstance;
+	wc.lpszClassName = "buttonclicker";
+	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+
+	if (!RegisterClass(&wc)) {
+		MessageBox(NULL, "Window registration failed!", "Error", MB_OK);
+		return 1;
+	}
+
+	// Create the main application window
+	HWND hWnd = CreateWindow(
+		"buttonclicker",
+		"bauton clicker",
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		GRID_SIZE * BUTTON_SIZE + 16, // Width
+		GRID_SIZE * BUTTON_SIZE + 39, // Height
+		NULL, NULL, hInstance, NULL
+	);
+
+	if (!hWnd) {
+		MessageBox(NULL, "Window creation failed!", "Error", MB_OK);
+		return 1;
+	}
+
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
+
+	// Main message loop
+	MSG msg;
+	while (GetMessage(&msg, NULL, 0, 0)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	return (int)msg.wParam;
+}
+
 // Callback function for the main window
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
@@ -56,47 +101,3 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	return 0;
 }
 
-// WinMain function (entry point)
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-	hInst = hInstance;
-
-	// Register the main window class
-	WNDCLASS wc = { 0 };
-	wc.lpfnWndProc = WndProc;
-	wc.hInstance = hInstance;
-	wc.lpszClassName = "buttonclicker";
-	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-
-	if (!RegisterClass(&wc)) {
-		MessageBox(NULL, "Window registration failed!", "Error", MB_OK);
-		return 1;
-	}
-
-	// Create the main application window
-	HWND hWnd = CreateWindow(
-		"buttonclicker",
-		"bauton clicker",
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT,
-		GRID_SIZE * BUTTON_SIZE + 16, // Width
-		GRID_SIZE * BUTTON_SIZE + 39, // Height
-		NULL, NULL, hInstance, NULL
-	);
-
-	if (!hWnd) {
-		MessageBox(NULL, "Window creation failed!", "Error", MB_OK);
-		return 1;
-	}
-
-	ShowWindow(hWnd, nCmdShow);
-	UpdateWindow(hWnd);
-
-	// Main message loop
-	MSG msg;
-	while (GetMessage(&msg, NULL, 0, 0)) {
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-
-	return (int)msg.wParam;
-}
