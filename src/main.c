@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <stdbool.h>
+#include "resource/resource.h"
 
 #define GRID_SIZE 16
 #define BUTTON_SIZE 16
@@ -89,6 +90,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	wc.hInstance = hInstance;
 	wc.lpszClassName = "buttonclicker";
 	wc.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
+	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON));
 
 	#define EXIT 128
     #define ABOUT 256
