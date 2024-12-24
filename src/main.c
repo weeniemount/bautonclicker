@@ -64,7 +64,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	WNDCLASS wc = { 0 };
 	wc.lpfnWndProc = WndProc;
 	wc.hInstance = hInstance;
-	wc.lpszClassName = "MinesweeperApp";
+	wc.lpszClassName = "buttonclicker";
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 
 	if (!RegisterClass(&wc)) {
