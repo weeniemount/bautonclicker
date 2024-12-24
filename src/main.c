@@ -82,19 +82,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	return (int)msg.wParam;
 }
 
-void PlaySoundFromMemory(HINSTANCE hInstance, int resourceID) {
-    // Find the resource
-    HRSRC hResInfo = FindResource(hInstance, MAKEINTRESOURCE(resourceID), RT_RCDATA);
-    if (hResInfo) {
-        HGLOBAL hRes = LoadResource(hInstance, hResInfo);
-        if (hRes) {
-            LPVOID pResData = LockResource(hRes);
-            if (pResData) {
-                DWORD resSize = SizeofResource(hInstance, hResInfo);
-
-                // Play the sound from memory
-                PlaySound((LPCSTR)pResData, NULL, SND_MEMORY | SND_ASYNC);
+void PlayResourceSound(HINSTANCE hInstance, int resourceID) {
+    HRSRC hResource = FindResource(hInstance, MAKEINTRESOURCE(resourceID), RT_RCDATA);
+    if (hResource) {
+        HGLOBAL hLoadedResource = LoadResource(hInstance, hResource);
+        if (hLoadedResource) {
+            LPVOID pResourceData = LockResource(hLoadedResource);
+            if (pResourceData) {
+                PlaySound((LPCSTR)pResourceData, NULL, SND_MEMORY | SND_ASYNC);
+                // Unlock the resource after use
+                UnlockResource(hLoadedResource);
             }
+            FreeResource(hLoadedResource); // Free the resource after use
         }
     }
 }
@@ -143,10 +142,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 }
             }
 
-            // Display message if all buttons are pressed
-
 			// Disable the button
 			if (hButton) {
+				PlayResourceSound(hInst, IDR_POPSFX);
 				if (deletebutton) {
 					DestroyWindow(hButton);
 				} else {

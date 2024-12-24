@@ -1,2 +1,3 @@
 #define IDI_ICON 101
 #define INT_HELPCHM 102
+#define IDR_POPSFX 103

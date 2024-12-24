@@ -5,5 +5,5 @@ del resource.o
 windres -i resource.rc -o resource.o
 cd ..
 cd ..
-gcc src/main.c src/resource/resource.o -o bautonclicker.exe -lwinmm -lmmsystem -mwindows
+gcc src/main.c src/resource/resource.o -o bautonclicker.exe -lwinmm -mwindows
 bautonclicker
