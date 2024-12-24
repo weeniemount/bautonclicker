@@ -26,13 +26,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	#define NEW_GAME 129
     #define ABOUT 256
     #define HELP_TOPICS 260
+	#define BUTTON_DELETE 260
 
     HMENU menu = CreateMenu();
     HMENU game = CreateMenu();
+	HMENU options = CreateMenu();
     HMENU help = CreateMenu();
     
 
     AppendMenu(menu, MF_POPUP, (UINT_PTR)game, "gam");
+	AppendMenu(menu, MF_POPUP, (UINT_PTR)options, "optionz");
     AppendMenu(menu, MF_POPUP, (UINT_PTR)help, "hlep");
 
     AppendMenu(game, MF_STRING, NEW_GAME, "new gam");
@@ -40,6 +43,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     AppendMenu(game, MF_STRING, EXIT, "exitearino");
     AppendMenu(help, MF_STRING, HELP_TOPICS, "help topicals...");
     AppendMenu(help, MF_STRING, ABOUT, "abaut");
+	AppendMenu(options, MF_STRING, BUTTON_DELETE, "toggle deleting button");
 
 	if (!RegisterClass(&wc)) {
 		MessageBox(NULL, "Window registration failed!", "Error", MB_OK);
@@ -106,6 +110,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			// Get the button ID
 			int buttonID = LOWORD(wParam);
 			HWND hButton = (HWND)lParam;
+			bool deletebutton = true;
 
  			buttonPressed[buttonID] = true;
 
@@ -122,13 +127,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 			// Disable the button
 			if (hButton) {
-				DestroyWindow(hButton);
-
-				/*EnableWindow(hButton, FALSE);
-				// Change button appearance to "held down"
-				SetWindowLong(hButton, GWL_STYLE, GetWindowLong(hButton, GWL_STYLE) | BS_FLAT);
-				SendMessage(hButton, WM_CTLCOLORBTN, (WPARAM)GetSysColorBrush(COLOR_BTNFACE), 0);
-				InvalidateRect(hButton, NULL, TRUE); // Force redraw*/
+				if (deletebutton) {
+					DestroyWindow(hButton);
+				} else {
+					EnableWindow(hButton, FALSE);
+					// Change button appearance to "held down"
+					SetWindowLong(hButton, GWL_STYLE, GetWindowLong(hButton, GWL_STYLE) | BS_FLAT);
+					SendMessage(hButton, WM_CTLCOLORBTN, (WPARAM)GetSysColorBrush(COLOR_BTNFACE), 0);
+					InvalidateRect(hButton, NULL, TRUE); // Force redraw
+				}
 			}
 
             if (allPressed) {
