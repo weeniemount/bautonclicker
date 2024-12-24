@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <stdbool.h>
 
-#define GRID_SIZE 5
+#define GRID_SIZE 16
 #define BUTTON_SIZE 16
 
 // Global variables
@@ -52,9 +52,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             }
 
             // Display message if all buttons are pressed
-            if (allPressed) {
-                MessageBox(hWnd, "All buttons have been pressed!", "Congratulations", MB_OK);
-            }
 
 			// Disable the button
 			if (hButton) {
@@ -66,6 +63,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 				SendMessage(hButton, WM_CTLCOLORBTN, (WPARAM)GetSysColorBrush(COLOR_BTNFACE), 0);
 				InvalidateRect(hButton, NULL, TRUE); // Force redraw*/
 			}
+
+            if (allPressed) {
+                MessageBox(hWnd, "u pressed all ze buttons!", "congrat", MB_OK);
+            }
 			break;
 		}
 		case WM_DESTROY:
@@ -89,6 +90,25 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	wc.lpszClassName = "buttonclicker";
 	wc.hbrBackground = CreateSolidBrush(RGB(240, 240, 240));
 
+	#define EXIT 128
+    #define ABOUT 256
+    #define HELP_TOPICS 260
+    #define STATUS_BAR 261
+
+    HMENU menu = CreateMenu();
+    HMENU game = CreateMenu();
+    HMENU help = CreateMenu();
+    
+
+    AppendMenu(menu, MF_POPUP, (UINT_PTR)game, "gam");
+    AppendMenu(menu, MF_POPUP, (UINT_PTR)help, "hlep");
+
+    AppendMenu(game, MF_STRING, EXIT, "new gam");
+	AppendMenu(game, MF_SEPARATOR, 0, NULL);  // Divider
+    AppendMenu(game, MF_STRING, EXIT, "exitearino");
+    AppendMenu(help, MF_STRING, HELP_TOPICS, "help topicals...");
+    AppendMenu(help, MF_STRING, ABOUT, "abaut");
+
 	if (!RegisterClass(&wc)) {
 		MessageBox(NULL, "Window registration failed!", "Error", MB_OK);
 		return 1;
@@ -101,8 +121,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		GRID_SIZE * BUTTON_SIZE + 16, // Width
-		GRID_SIZE * BUTTON_SIZE + 39, // Height
-		NULL, NULL, hInstance, NULL
+		GRID_SIZE * BUTTON_SIZE + 39 + 20, // Height
+		NULL, menu, hInstance, NULL
 	);
 
 	if (!hWnd) {
