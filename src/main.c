@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "resource/resource.h"
+#include <mmsystem.h>
 
 #define GRID_SIZE 16
 #define BUTTON_SIZE 16
@@ -80,6 +81,24 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	return (int)msg.wParam;
 }
+
+void PlaySoundFromMemory(HINSTANCE hInstance, int resourceID) {
+    // Find the resource
+    HRSRC hResInfo = FindResource(hInstance, MAKEINTRESOURCE(resourceID), RT_RCDATA);
+    if (hResInfo) {
+        HGLOBAL hRes = LoadResource(hInstance, hResInfo);
+        if (hRes) {
+            LPVOID pResData = LockResource(hRes);
+            if (pResData) {
+                DWORD resSize = SizeofResource(hInstance, hResInfo);
+
+                // Play the sound from memory
+                PlaySound((LPCSTR)pResData, NULL, SND_MEMORY | SND_ASYNC);
+            }
+        }
+    }
+}
+
 
 // Callback function for the main window
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
