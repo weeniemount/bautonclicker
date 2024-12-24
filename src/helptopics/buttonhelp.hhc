@@ -42,6 +42,11 @@
   <param name="Local" value="toggledeletebutton.html">
   <param name="ImageNumber" value="11">
 </OBJECT>
+<LI><OBJECT type="text/sitemap">
+  <param name="Name" value="toggle sound">
+  <param name="Local" value="togglesound.html">
+  <param name="ImageNumber" value="11">
+</OBJECT>
 </UL>
 <LI><OBJECT type="text/sitemap">
   <param name="Name" value="abaut">
