@@ -143,9 +143,69 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     MessageBox(hWnd, "just a funny game to click buttons\nmade by boinkwer to push", "abaut button pushher", MB_OK | MB_ICONINFORMATION);
                     break;
 				case NEW_GAME:
-					break;
-				
+                    // Remove all buttons
+                    for (int i = 0; i < GRID_SIZE * GRID_SIZE; ++i) {
+                        DestroyWindow(GetDlgItem(hWnd, i));
+                    }
+                    // Clear the buttonPressed array
+                    memset(buttonPressed, 0, sizeof(buttonPressed));
 
+                    // Recreate the grid of buttons
+                    for (int row = 0; row < GRID_SIZE; ++row) {
+                        for (int col = 0; col < GRID_SIZE; ++col) {
+                            HWND hButton = CreateWindow(
+                                "BUTTON", 
+                                "", 
+                                WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 
+                                col * BUTTON_SIZE, 
+                                row * BUTTON_SIZE, 
+                                BUTTON_SIZE, 
+                                BUTTON_SIZE, 
+                                hWnd, 
+                                (HMENU)(row * GRID_SIZE + col), 
+                                hInst, 
+                                NULL
+                            );
+                            if (!hButton) {
+                                MessageBox(NULL, "Button creation failed!", "Error", MB_OK);
+                            }
+                        }
+                    }
+                    break;
+				case HELP_TOPICS:
+                    {
+                        HRSRC hResInfo = FindResource(NULL, MAKEINTRESOURCE(INT_HELPCHM), RT_RCDATA);
+                        if (hResInfo) {
+                            HGLOBAL hRes = LoadResource(NULL, hResInfo);
+                            if (hRes) {
+                                DWORD resSize = SizeofResource(NULL, hResInfo);
+                                LPVOID pResData = LockResource(hRes);
+
+                                if (pResData) {
+                                    TCHAR tempPath[MAX_PATH];
+                                    GetTempPath(MAX_PATH, tempPath);
+                                    TCHAR tempFile[MAX_PATH];
+                                    GetTempFileName(tempPath, TEXT("CHM"), 0, tempFile);
+
+                                    HANDLE hFile = CreateFile(tempFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, NULL);
+                                    if (hFile != INVALID_HANDLE_VALUE) {
+                                        DWORD bytesWritten;
+                                        WriteFile(hFile, pResData, resSize, &bytesWritten, NULL);
+                                        CloseHandle(hFile);
+
+                                        // Rename .tmp to .chm
+                                        TCHAR newFilePath[MAX_PATH];
+                                        wsprintf(newFilePath, TEXT("%s.chm"), tempFile);
+                                        if (MoveFile(tempFile, newFilePath)) {
+                                            // Open the CHM file
+                                            ShellExecute(hWnd, TEXT("open"), newFilePath, NULL, NULL, SW_SHOWNORMAL);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
 			}
 
 			break;
